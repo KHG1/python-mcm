@@ -1,16 +1,16 @@
 import pyupbit
 import numpy as np
 
-k = 0.5
+k = 0.4
 
-df = pyupbit.get_ohlcv("KRW-BTC", interval="minute10", count = 10)
+df = pyupbit.get_ohlcv("KRW-BTC", interval="minute1", count = 10)
 df['range'] = (df['high'] - df['low']) * k
 df['target'] = df['open'] + df['range'].shift(1)
 
 fee = 0.05
 
 df['ror'] = np.where(df['high'] > df['target'],
-                     df['close'] / df['target'] - fee,
+                     df['close'] / df['target']*0.95,
                      1)
 
 df['hpr'] = df['ror'].cumprod()
